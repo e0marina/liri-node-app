@@ -19,7 +19,9 @@
   "homepage": "https://github.com/e0marina/liri-node-app#readme",
   "dependencies": {
     "axios": "^0.19.2",
+    "bandsintown": "^1.0.1",
     "dotenv": "^8.2.0",
+    "inquirer": "^7.0.4",
     "node-spotify-api": "^1.1.1"
   }
 }
