@@ -14,20 +14,34 @@ switch (action) {
     concert();
     break;
 }
+//user will be inputting more than one name for artists and song, so we need to push the process.argvs into an array
+// Store all of the arguments in an array
+var nodeArgs = process.argv;
+
+// Create an empty variable for holding users input
+var userInput = "";
+
+// Loop through all the words in the node argument
+// And do a little for-loop magic to handle the inclusion of "+"s
+for (var i = 2; i < nodeArgs.length; i++) {
+  if (i > 2 && i < nodeArgs.length) {
+    userInput = userInput + "+" + nodeArgs[i];
+  } else {
+    userInput += nodeArgs[i];
+  }
+}
 
 //function for getting concert info
 function concert() {
-  //artist will be user input
-  let artist = process.argv[3] + process.argv[4] + process.argv[5]; // this doesn't work if name is shorter or longer...figure out how to handle input of more than one word
   axios
 
     .get(
       "https://rest.bandsintown.com/artists/" +
-        artist +
+        userInput +
         "/events?app_id=codingbootcamp"
     )
     .then(resp => {
-      console.log(artist);
+      console.log(userInput);
 
       console.log(resp.data); //will come back as an empty array if there are no shows coming up for the artist
     });
