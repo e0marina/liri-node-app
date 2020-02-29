@@ -24,7 +24,7 @@ function concert() {
 
   // Create an empty variable for holding users input
   var userInput = "";
-  console.log(userInput);
+  // console.log(userInput);
 
   // Loop through all the words in the node argument
   // And do a little for-loop magic to handle the inclusion of "+"s
@@ -40,10 +40,17 @@ function concert() {
       "https://rest.bandsintown.com/artists/" +
         userInput +
         "/events?app_id=codingbootcamp"
-      // "https://rest.bandsintown.com/artists/celine+dion/events?app_id=codingbootcamp"
     )
     .then(resp => {
-      console.log(resp.data); //will come back as an empty array if there are no shows coming up for the artist
+      // console.log(resp.data[0].venue);
+      //can loop through it bc it's an array!
+      for (let i = 0; i < resp.data.length; i++) {
+        console.log(resp.data[i].venue.country);
+        // if (resp.data[i].venue === "venue") {
+        //   console.log(resp.data[i].venue);
+        // }
+      }
+
       if (resp.data === []) {
         console.log(
           "please search for another artist, this one doesn't have shows coming up"
