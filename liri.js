@@ -1,9 +1,12 @@
 require("dotenv").config();
 
 const keys = require("./keys.js");
+
 const Spotify = require("node-spotify-api");
 
 const axios = require("axios");
+
+const moment = require("moment");
 
 const spotify = new Spotify(keys.spotify);
 
@@ -48,6 +51,7 @@ function concert() {
         console.log(resp.data[i].venue.name);
         console.log(resp.data[i].venue.city);
         console.log(resp.data[i].venue.country);
+        console.log(moment(resp.data[i].datetime).format("LLL"));
         console.log("___________________________");
       }
 
