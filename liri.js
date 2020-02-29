@@ -45,10 +45,10 @@ function concert() {
       // console.log(resp.data[0].venue);
       //can loop through it bc it's an array!
       for (let i = 0; i < resp.data.length; i++) {
+        console.log(resp.data[i].venue.name);
+        console.log(resp.data[i].venue.city);
         console.log(resp.data[i].venue.country);
-        // if (resp.data[i].venue === "venue") {
-        //   console.log(resp.data[i].venue);
-        // }
+        console.log("___________________________");
       }
 
       if (resp.data === []) {
