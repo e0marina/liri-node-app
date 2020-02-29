@@ -88,7 +88,8 @@ function spotifyFunc() {
   spotify
     .search({ type: "track", query: userInput })
     .then(function(response) {
-      console.log(response);
+      // console.log(response);
+      console.log(response.tracks.items);
     })
     .catch(function(err) {
       console.log(err);
