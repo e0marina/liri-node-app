@@ -231,14 +231,89 @@ function randomFunc() {
     if (error) {
       return console.log(error);
     }
-
     // We will then print the contents of data
-    console.log(data);
+    // console.log(data);
 
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(",");
 
     // We will then re-display the content as an array for later use.
-    console.log(dataArr);
+    // console.log(dataArr);
+    if (dataArr[0] === "spotify-this-song") {
+      userInput = dataArr[1];
+      spotify
+        .search({ type: "track", query: userInput })
+        .then(function(response) {
+          console.log("___________________________");
+          console.log(
+            "artist(s) that sing this song: " +
+              response.tracks.items[0].artists[0].name
+          );
+          console.log("name of the song: " + response.tracks.items[0].name);
+
+          console.log(
+            "url for this song on spotify: " +
+              response.tracks.items[0].external_urls.spotify
+          );
+
+          console.log(
+            "the album the song is on: " + response.tracks.items[0].album.name
+          );
+          console.log("___________________________");
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+      // return;
+    } else if (dataArr[0] === "movie-this") {
+      userInput = dataArr[1];
+      var queryUrl =
+        "http://www.omdbapi.com/?t=" +
+        userInput +
+        "&y=&plot=short&apikey=trilogy";
+
+      axios.get(queryUrl).then(function(response) {
+        // console.log(response);
+        console.log("___________________________");
+        console.log("Movie title: " + response.data.Title);
+        console.log("Release Year: " + response.data.Year);
+        console.log("IMDB Rating: " + response.data.imdbRating);
+        console.log(
+          "Rotten Tomatoes Rating: " + response.data.Ratings[1].Value
+        );
+        console.log("Production Country: " + response.data.Country);
+        console.log("Language: " + response.data.Language);
+        console.log("Plot: " + response.data.Plot);
+        console.log("Actors: " + response.data.Actors);
+
+        console.log("___________________________");
+      });
+      //text file needs to have artist not in quotes to work
+    } else if (dataArr[0] === "concert-this") {
+      userInput = dataArr[1];
+      axios
+        .get(
+          "https://rest.bandsintown.com/artists/" +
+            userInput +
+            "/events?app_id=codingbootcamp"
+        )
+        .then(resp => {
+          // console.log(resp.data[0].venue);
+          //can loop through it bc it's an array!
+          for (let i = 0; i < resp.data.length; i++) {
+            console.log(resp.data[i].venue.name);
+            console.log(resp.data[i].venue.city);
+            console.log(resp.data[i].venue.country);
+            console.log(moment(resp.data[i].datetime).format("LLL"));
+            console.log("___________________________");
+          }
+
+          if (resp.data === []) {
+            console.log(
+              "please search for another artist, this one doesn't have shows coming up"
+            );
+          }
+        });
+    }
   });
 }
