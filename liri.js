@@ -13,13 +13,16 @@ const spotify = new Spotify(keys.spotify);
 
 let action = process.argv[2];
 
-//switch statement
+//switch statement for each action/process.argv[2]
 switch (action) {
   case "concert-this":
     concert();
     break;
   case "spotify-this-song":
     spotifyFunc();
+    break;
+  case "movie-this":
+    omdbFunc();
     break;
 }
 
@@ -121,5 +124,81 @@ function spotifyFunc() {
       console.log(err);
     });
 }
-
+//Ryan recommended this for looking at api objects that are returned:
 // console.log(util.inspect(obj, {depth: null}));
+
+//function for the OMDB portion of the app
+function omdbFunc() {
+  // Create an empty variable for holding users input
+  var userInput = "";
+
+  if (process.argv[3] === undefined) {
+    console.log("___________________________");
+    console.log("Movie title: Mr. Nobody");
+    console.log("Release Year: 2009");
+    console.log("IMDB Rating: 7.8");
+    console.log("Rotten Tomatoes Rating: 67%");
+    console.log(
+      "Production Country: Belgium, Germany, Canada, France, UK, Luxembourg"
+    );
+    console.log("Language: English, Mohawk");
+    console.log(
+      "Plot: A boy stands on a station platform as a train is about to leave. Should he go with his mother or stay with his father? Infinite possibilities arise from this decision. As long as he doesn't choose, anything is possible."
+    );
+    console.log(
+      "Actors: Jared Leto, Sarah Polley, Diane Kruger, Linh Dan Pham"
+    );
+
+    console.log("___________________________");
+    return;
+  } else {
+    //starting at index 3, loop through the node args
+    for (var i = 3; i < process.argv.length; i++) {
+      if (i > 3 && i < process.argv.length) {
+        userInput = userInput + "+" + process.argv[i];
+      } else {
+        userInput += process.argv[i];
+      }
+    }
+  }
+  // Then run a request with axios to the OMDB API with the movie specified
+  var queryUrl =
+    "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
+
+  axios
+    .get(queryUrl)
+    .then(function(response) {
+      // console.log(response);
+      console.log("___________________________");
+      console.log("Movie title: " + response.data.Title);
+      console.log("Release Year: " + response.data.Year);
+      console.log("IMDB Rating: " + response.data.imdbRating);
+      console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
+      console.log("Production Country: " + response.data.Country);
+      console.log("Language: " + response.data.Language);
+      console.log("Plot: " + response.data.Plot);
+      console.log("Actors: " + response.data.Actors);
+
+      console.log("___________________________");
+    })
+    .catch(function(error) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log("---------------Data---------------");
+        console.log(error.response.data);
+        console.log("---------------Status---------------");
+        console.log(error.response.status);
+        console.log("---------------Status---------------");
+        console.log(error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an object that comes back with details pertaining to the error that occurred.
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log("Error", error.message);
+      }
+      console.log(error.config);
+    });
+}
