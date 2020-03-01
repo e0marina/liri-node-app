@@ -83,21 +83,32 @@ function concert() {
 function spotifyFunc() {
   // Create an empty variable for holding users input
   var userInput = "";
-
+  //if user doesn't type in a song name, defaults to the sign
   if (process.argv[3] === undefined) {
-    // console.log("___________________________");
-    // console.log("artist(s) that sing this song: Ace of Base");
-    // console.log("name of the song: The Sign");
-    // console.log(
-    //   "url for this song on spotify: https://open.spotify.com/track/0hrBpAOgrt8RXigk83LLNE"
-    // );
-    // console.log("the album the song is on: The Sign (US Album) [Remastered]");
-    // console.log("___________________________");
-
     userInput = "The Sign";
-    // console.log(userInput);
-    spotifySearchFunc();
+    spotify
+      .search({ type: "track", query: userInput })
+      .then(function(response) {
+        console.log("___________________________");
+        console.log(
+          "artist(s) that sing this song: " +
+            response.tracks.items[0].artists[0].name
+        );
+        console.log("name of the song: " + response.tracks.items[0].name);
 
+        console.log(
+          "url for this song on spotify: " +
+            response.tracks.items[0].external_urls.spotify
+        );
+
+        console.log(
+          "the album the song is on: " + response.tracks.items[0].album.name
+        );
+        console.log("___________________________");
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
     return;
   } else {
     //starting at index 3, loop through the node args
@@ -109,34 +120,32 @@ function spotifyFunc() {
       }
     }
   }
-  function spotifySearchFunc() {
-    spotify
-      .search({ type: "track", query: userInput })
-      .then(function(response) {
-        for (let i = 0; i < response.tracks.items.length; i++) {
-          console.log("___________________________");
-          console.log(
-            "artist(s) that sing this song: " +
-              response.tracks.items[i].artists[0].name
-          );
-          console.log("name of the song: " + response.tracks.items[i].name);
-          //preview link of the song from Spotify
-          console.log(
-            "url for this song on spotify: " +
-              response.tracks.items[i].external_urls.spotify
-          );
-          //album song is from
-          console.log(
-            "the album the song is on: " + response.tracks.items[i].album.name
-          );
-          console.log("___________________________");
-        }
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-  }
-  spotifySearchFunc();
+
+  spotify
+    .search({ type: "track", query: userInput })
+    .then(function(response) {
+      for (let i = 0; i < response.tracks.items.length; i++) {
+        console.log("___________________________");
+        console.log(
+          "artist(s) that sing this song: " +
+            response.tracks.items[i].artists[0].name
+        );
+        console.log("name of the song: " + response.tracks.items[i].name);
+        //preview link of the song from Spotify
+        console.log(
+          "url for this song on spotify: " +
+            response.tracks.items[i].external_urls.spotify
+        );
+        //album song is from
+        console.log(
+          "the album the song is on: " + response.tracks.items[i].album.name
+        );
+        console.log("___________________________");
+      }
+    })
+    .catch(function(err) {
+      console.log(err);
+    });
 }
 
 //function for the OMDB portion of the app
