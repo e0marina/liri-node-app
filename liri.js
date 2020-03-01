@@ -32,7 +32,7 @@ function concert() {
 
   // Create an empty variable for holding users input
   var userInput = "";
-  // console.log(userInput);
+  console.log(userInput);
 
   // Loop through all the words in the node argument
   // And do a little for-loop magic to handle the inclusion of "+"s
@@ -67,22 +67,31 @@ function concert() {
       }
     });
 }
+
 //function for spotify portion of the app
 function spotifyFunc() {
-  var nodeArgs = process.argv;
-  // console.log(nodeArgs);
-
   // Create an empty variable for holding users input
   var userInput = "";
-  // console.log(userInput);
 
-  // Loop through all the words in the node argument
-  // And do a little for-loop magic to handle the inclusion of "+"s
-  for (var i = 3; i < nodeArgs.length; i++) {
-    if (i > 3 && i < nodeArgs.length) {
-      userInput = userInput + "+" + nodeArgs[i];
-    } else {
-      userInput += nodeArgs[i];
+  if (process.argv[3] === undefined) {
+    console.log("___________________________");
+    console.log("artist(s) that sing this song: Ace of Base");
+    console.log("name of the song: The Sign");
+    console.log(
+      "url for this song on spotify: https://open.spotify.com/track/0hrBpAOgrt8RXigk83LLNE"
+    );
+    console.log("the album the song is on: The Sign (US Album) [Remastered]");
+    console.log("___________________________");
+
+    return;
+  } else {
+    //starting at index 3, loop through the node args
+    for (var i = 3; i < process.argv.length; i++) {
+      if (i > 3 && i < process.argv.length) {
+        userInput = userInput + "+" + process.argv[i];
+      } else {
+        userInput += process.argv[i];
+      }
     }
   }
 
@@ -90,6 +99,7 @@ function spotifyFunc() {
     .search({ type: "track", query: userInput })
     .then(function(response) {
       for (let i = 0; i < response.tracks.items.length; i++) {
+        console.log("___________________________");
         console.log(
           "artist(s) that sing this song: " +
             response.tracks.items[i].artists[0].name
