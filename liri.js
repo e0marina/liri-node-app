@@ -1,3 +1,6 @@
+//Ryan recommended this for looking at api objects that are returned:
+// console.log(util.inspect(obj, {depth: null}));
+
 require("dotenv").config();
 
 const keys = require("./keys.js");
@@ -11,6 +14,8 @@ const util = require("util");
 
 const spotify = new Spotify(keys.spotify);
 
+const fs = require("fs");
+
 let action = process.argv[2];
 
 //switch statement for each action/process.argv[2]
@@ -23,6 +28,9 @@ switch (action) {
     break;
   case "movie-this":
     omdbFunc();
+    break;
+  case "do-what-it-says":
+    randomFunc();
     break;
 }
 
@@ -77,14 +85,18 @@ function spotifyFunc() {
   var userInput = "";
 
   if (process.argv[3] === undefined) {
-    console.log("___________________________");
-    console.log("artist(s) that sing this song: Ace of Base");
-    console.log("name of the song: The Sign");
-    console.log(
-      "url for this song on spotify: https://open.spotify.com/track/0hrBpAOgrt8RXigk83LLNE"
-    );
-    console.log("the album the song is on: The Sign (US Album) [Remastered]");
-    console.log("___________________________");
+    // console.log("___________________________");
+    // console.log("artist(s) that sing this song: Ace of Base");
+    // console.log("name of the song: The Sign");
+    // console.log(
+    //   "url for this song on spotify: https://open.spotify.com/track/0hrBpAOgrt8RXigk83LLNE"
+    // );
+    // console.log("the album the song is on: The Sign (US Album) [Remastered]");
+    // console.log("___________________________");
+
+    userInput = "The Sign";
+    // console.log(userInput);
+    spotifySearchFunc();
 
     return;
   } else {
@@ -97,35 +109,35 @@ function spotifyFunc() {
       }
     }
   }
-
-  spotify
-    .search({ type: "track", query: userInput })
-    .then(function(response) {
-      for (let i = 0; i < response.tracks.items.length; i++) {
-        console.log("___________________________");
-        console.log(
-          "artist(s) that sing this song: " +
-            response.tracks.items[i].artists[0].name
-        );
-        console.log("name of the song: " + response.tracks.items[i].name);
-        //preview link of the song from Spotify
-        console.log(
-          "url for this song on spotify: " +
-            response.tracks.items[i].external_urls.spotify
-        );
-        //album song is from
-        console.log(
-          "the album the song is on: " + response.tracks.items[i].album.name
-        );
-        console.log("___________________________");
-      }
-    })
-    .catch(function(err) {
-      console.log(err);
-    });
+  function spotifySearchFunc() {
+    spotify
+      .search({ type: "track", query: userInput })
+      .then(function(response) {
+        for (let i = 0; i < response.tracks.items.length; i++) {
+          console.log("___________________________");
+          console.log(
+            "artist(s) that sing this song: " +
+              response.tracks.items[i].artists[0].name
+          );
+          console.log("name of the song: " + response.tracks.items[i].name);
+          //preview link of the song from Spotify
+          console.log(
+            "url for this song on spotify: " +
+              response.tracks.items[i].external_urls.spotify
+          );
+          //album song is from
+          console.log(
+            "the album the song is on: " + response.tracks.items[i].album.name
+          );
+          console.log("___________________________");
+        }
+      })
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+  spotifySearchFunc();
 }
-//Ryan recommended this for looking at api objects that are returned:
-// console.log(util.inspect(obj, {depth: null}));
 
 //function for the OMDB portion of the app
 function omdbFunc() {
@@ -201,4 +213,23 @@ function omdbFunc() {
       }
       console.log(error.config);
     });
+}
+
+function randomFunc() {
+  // The code will store the contents of the reading inside the variable "data"
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error);
+    }
+
+    // We will then print the contents of data
+    console.log(data);
+
+    // Then split it by commas (to make it more readable)
+    var dataArr = data.split(",");
+
+    // We will then re-display the content as an array for later use.
+    console.log(dataArr);
+  });
 }
