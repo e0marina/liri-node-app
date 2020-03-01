@@ -89,9 +89,13 @@ function spotifyFunc() {
     .search({ type: "track", query: userInput })
     .then(function(response) {
       // console.log(response);
-      console.log(response.tracks.items);
+      console.log(response.tracks.items[0].name);
+      //comes down to is it an array or object to pull stuff out.
     })
     .catch(function(err) {
       console.log(err);
     });
 }
+
+// const util = require('util');
+// console.log(util.inspect(obj, {depth: null}));
