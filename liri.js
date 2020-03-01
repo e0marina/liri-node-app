@@ -7,6 +7,7 @@ const Spotify = require("node-spotify-api");
 const axios = require("axios");
 
 const moment = require("moment");
+const util = require("util");
 
 const spotify = new Spotify(keys.spotify);
 
@@ -88,14 +89,27 @@ function spotifyFunc() {
   spotify
     .search({ type: "track", query: userInput })
     .then(function(response) {
-      // console.log(response);
-      console.log(response.tracks.items[0].name);
-      //comes down to is it an array or object to pull stuff out.
+      for (let i = 0; i < response.tracks.items.length; i++) {
+        console.log(
+          "artist(s) that sing this song: " +
+            response.tracks.items[i].artists[0].name
+        );
+        console.log("name of the song: " + response.tracks.items[i].name);
+        //preview link of the song from Spotify
+        console.log(
+          "url for this song on spotify: " +
+            response.tracks.items[i].external_urls.spotify
+        );
+        //album song is from
+        console.log(
+          "the album the song is on: " + response.tracks.items[i].album.name
+        );
+        console.log("___________________________");
+      }
     })
     .catch(function(err) {
       console.log(err);
     });
 }
 
-// const util = require('util');
 // console.log(util.inspect(obj, {depth: null}));
