@@ -50,7 +50,7 @@ It will return:
 I created this app for UCLA bootcamp. 
    
 
-4. Include screenshots, gifs or videos of the app functioning
+Here's a link to a video of how it works: https://drive.google.com/file/d/1vprKu8ZMb7YA5uI63HcRXYw8rLfIJQAv/view
 
 List of technologies used in the app
 * JavaScript
