@@ -232,7 +232,7 @@ function randomFunc() {
       return console.log(error);
     }
     // We will then print the contents of data
-    // console.log(data);
+    console.log(data);
 
     // Then split it by commas (to make it more readable)
     var dataArr = data.split(",");
@@ -266,6 +266,7 @@ function randomFunc() {
         });
       // return;
     } else if (dataArr[0] === "movie-this") {
+      //movie-this,the avengers
       userInput = dataArr[1];
       var queryUrl =
         "http://www.omdbapi.com/?t=" +
@@ -289,6 +290,7 @@ function randomFunc() {
         console.log("___________________________");
       });
       //text file needs to have artist not in quotes to work
+      //concert-this,Halsey
     } else if (dataArr[0] === "concert-this") {
       userInput = dataArr[1];
       axios
